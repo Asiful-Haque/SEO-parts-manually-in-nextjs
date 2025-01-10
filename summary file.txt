@@ -1,0 +1,25 @@
+Summary
+
+Automatically Handled by Next.js:
+Static site generation (SSG) and server-side rendering (SSR).
+Code splitting and performance optimizations.
+Image optimization with next/image.
+Prefetching and routing optimizations.
+Built-in performance features like automatic static optimization and caching.
+
+Manually Handled:
+- Meta tags (e.g., description, keywords, Open Graph).
+
+- Static SEO: Use metadata in page.js for static content (like homepage).
+- Dynamic SEO metadata (for URL parameters)./ Dynamic SEO: Use generateMetadata for dynamic pages (like language-specific pages).
+- Canonical URLs to avoid duplicate content. Canonical URLs: Add canonical URLs in generateMetadata to prevent duplicate content.
+- Global SEO: Use metadata in layout.js for common settings across all pages.
+
+
+- Google verification tags. / Add Google verification: Insert verification code in the head of layout.js.
+
+- Sitemap and robots.txt setup. /Sitemap & Robots.txt: Use next-sitemap to generate a sitemap and robots.txt.
+- Structured data (JSON-LD).
+
+- Custom 404 page for better user experience.
+Next.js provides a solid foundation for SEO, but for full SEO optimization, you still need to manually add a few key elements like custom metadata, sitemaps, and structured data.
