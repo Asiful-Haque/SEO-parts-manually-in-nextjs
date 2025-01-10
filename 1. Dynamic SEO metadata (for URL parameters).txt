@@ -3,7 +3,10 @@ import Meaning from '@/components/Meaning';
 // import { notFound } from 'next/navigation';
 import React from 'react'
 
---------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------
+Dynamic SEO: Use metadata in page.js for dynamic content (like src/app/[meaning]/page.js).
+-------------------------------------------------------------------------------------------------------------------
 export async function generateMetadata({ params }) {
   const { meaning } = await params;
   
@@ -29,7 +32,9 @@ export async function generateMetadata({ params }) {
     canonical: `https://english-welsh.net/english-to-${language}-meaning-${word}`, // Add canonical URL
   };
 }
---------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
+Dynamic SEO: Use metadata in page.js for dynamic content (like src/app/[meaning]/page.js).
+-------------------------------------------------------------------------------------------------------------------
 const meaning = async({ params }) => {
     const { meaning } = await params;
     const wordParts = meaning.split('-').slice(4); // Starts from index 4 (after 'meaning')
