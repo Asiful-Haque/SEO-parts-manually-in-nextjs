@@ -91,3 +91,74 @@ package.json
   "start": "next start",
   "postbuild": "next-sitemap"  // Add this line
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------Home page = 1.0 and rest pages to 0.9-----------------------------------------------------------------------------------
+module.exports = {
+  siteUrl: process.env.NEXT_PUBLIC_BASE_URL || 'https://www.bdword.com',
+  generateRobotsTxt: true,
+  sitemapSize: 5000,
+  changefreq: 'daily',
+  robotsTxtOptions: {
+    policies: [
+      // ✅ Allow good bots----------------------------------------------------------------
+      { userAgent: 'Googlebot', allow: '/' },
+      { userAgent: 'Bingbot', allow: '/' },
+      { userAgent: 'DuckDuckBot', allow: '/' },
+      { userAgent: 'Slurp', allow: '/' },
+
+      // 🚫 Block known bad bots-----------------------------------------------------------
+      { userAgent: 'AhrefsBot', disallow: '/' },      // SEO Crawler
+      { userAgent: 'SemrushBot', disallow: '/' },     // SEO Tool
+      { userAgent: 'MJ12bot', disallow: '/' },        // Link Analysis Bot
+      { userAgent: 'DotBot', disallow: '/' },         // Scraper
+      { userAgent: 'Baiduspider', disallow: '/' },    // Baidu (China)
+      { userAgent: 'YandexBot', disallow: '/' },      // Yandex (Russia)
+      { userAgent: 'Sogou', disallow: '/' },          // Chinese Bot
+      { userAgent: 'Exabot', disallow: '/' },         // French Bot
+      { userAgent: 'PetalBot', disallow: '/' },       // Huawei Bot
+      { userAgent: 'crawler', disallow: '/' },        // Generic crawlers
+      { userAgent: 'python-requests', disallow: '/' },// Python scripts
+      { userAgent: 'wget', disallow: '/' },           // Wget tool
+      { userAgent: 'curl', disallow: '/' },           // Curl tool
+
+      // 🔒 Disallow sensitive/private areas-------------------------------------------------
+      { userAgent: '*', disallow: '/admin' },
+      { userAgent: '*', disallow: '/api/private' },
+      { userAgent: '*', disallow: '/server' },
+      { userAgent: '*', disallow: '/config' },
+      { userAgent: '*', disallow: '/.env' },
+      { userAgent: '*', disallow: '/private' },
+      { userAgent: '*', disallow: '/*.pdf' },
+      { userAgent: '*', disallow: '/*.json' },
+      { userAgent: '*', disallow: '/scripts' },
+    ],
+    additionalSitemaps: [
+      `${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.bdword.com'}/sitemap.xml`,
+    ],
+  },
+  transform: async (config, url) => {
+    // Set homepage to 1.0 priority, other pages to 0.9 priority
+    const priority = url === '/' ? 1.0 : 0.9;
+    
+    return {
+      loc: url,
+      priority: priority,
+      changefreq: 'daily',
+    };
+  },
+};
