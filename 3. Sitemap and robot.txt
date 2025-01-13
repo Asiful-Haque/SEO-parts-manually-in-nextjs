@@ -1,0 +1,90 @@
+Run this command in your terminal:
+
+bash
+Copy code
+npm install next-sitemap
+or with Yarn:
+
+bash
+Copy code
+yarn add next-sitemap
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------
+In the root directory of your project, create a file named next-sitemap.config.js
+-------------------------------------------------------------------------------------------------------------------
+const priorityMap = {
+  '/': 1.0,             // Homepage has the highest priority
+  '/special-page': 0.9, // Special page with high priority
+  '/about': 0.8,        // About page with medium-high priority
+  '/contact': 0.7,      // Contact page with medium priority
+  '/blog': 0.6,         // Blog page with lower priority
+  '/terms': 0.5,        // Terms page with even lower priority
+};
+
+module.exports = {
+  siteUrl: process.env.NEXT_PUBLIC_BASE_URL || 'https://www.bdword.com',
+  generateRobotsTxt: true,
+  sitemapSize: 5000,
+  changefreq: 'daily',
+  robotsTxtOptions: {
+    policies: [
+    // ✅ Allow good bots----------------------------------------------------------------
+      { userAgent: 'Googlebot', allow: '/' },
+      { userAgent: 'Bingbot', allow: '/' },
+      { userAgent: 'DuckDuckBot', allow: '/' },
+      { userAgent: 'Slurp', allow: '/' },
+
+    // 🚫 Block known bad bots-----------------------------------------------------------
+      { userAgent: 'AhrefsBot', disallow: '/' },      // SEO Crawler
+      { userAgent: 'SemrushBot', disallow: '/' },     // SEO Tool
+      { userAgent: 'MJ12bot', disallow: '/' },        // Link Analysis Bot
+      { userAgent: 'DotBot', disallow: '/' },         // Scraper
+      { userAgent: 'Baiduspider', disallow: '/' },    // Baidu (China)
+      { userAgent: 'YandexBot', disallow: '/' },      // Yandex (Russia)
+      { userAgent: 'Sogou', disallow: '/' },          // Chinese Bot
+      { userAgent: 'Exabot', disallow: '/' },         // French Bot
+      { userAgent: 'PetalBot', disallow: '/' },       // Huawei Bot
+      { userAgent: 'crawler', disallow: '/' },        // Generic crawlers
+      { userAgent: 'python-requests', disallow: '/' },// Python scripts
+      { userAgent: 'wget', disallow: '/' },           // Wget tool
+      { userAgent: 'curl', disallow: '/' },           // Curl tool
+
+    // 🔒 Disallow sensitive/private areas-------------------------------------------------
+      { userAgent: '*', disallow: '/admin' },
+      { userAgent: '*', disallow: '/api/private' },
+      { userAgent: '*', disallow: '/server' },
+      { userAgent: '*', disallow: '/config' },
+      { userAgent: '*', disallow: '/.env' },
+      { userAgent: '*', disallow: '/private' },
+      { userAgent: '*', disallow: '/*.pdf' },
+      { userAgent: '*', disallow: '/*.json' },
+      { userAgent: '*', disallow: '/scripts' },
+    ],
+    additionalSitemaps: [
+      `${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.bdword.com'}/sitemap.xml`,
+    ],
+  },
+  transform: async (config, url) => {
+    // Set priority based on the URL from the priorityMap
+    const priority = priorityMap[url] || (url === '/' ? 1.0 : 0.7);
+    
+    return {
+      loc: url,
+      priority: priority,
+      changefreq: 'daily',
+    };
+  },
+};
+
+
+
+package.json
+"scripts": {
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start",
+  "postbuild": "next-sitemap"  // Add this line
+}
